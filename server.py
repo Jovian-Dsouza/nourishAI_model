@@ -19,7 +19,6 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 model = None
 labels = None
 
-@app.before_first_request
 def load_model_and_labels():
     global model, labels
     model = tf.keras.models.load_model(app.config['MODEL_PATH'])
@@ -83,4 +82,5 @@ def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 if __name__ == "__main__":
+    load_model_and_labels()
     app.run(debug=True)
