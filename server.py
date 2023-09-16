@@ -16,14 +16,18 @@ if not os.path.exists(UPLOAD_FOLDER):
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-model = None
-labels = None
 
 def load_model_and_labels():
     global model, labels
     model = tf.keras.models.load_model(app.config['MODEL_PATH'])
     with open(app.config['LABEL_PATH'], 'r') as f:
         labels = [label.strip() for label in f.readlines()]
+
+
+model = None
+labels = None
+load_model_and_labels()
+
 
 def preprocess_image(image_path):
     """Preprocess the input image for MobileNet V3 model."""
@@ -82,5 +86,4 @@ def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 if __name__ == "__main__":
-    load_model_and_labels()
     app.run(debug=True)
